@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Soil Moisture Sensor Data</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <nav class="navbar">
+    <button class="nav-button" onclick="location.href='moistog.html'">Soil Moisture</button>
+    <button class="nav-button" onclick="location.href='pH.html'">Soil pH</button>
+    <button class="nav-button" onclick="location.href='faq.html'">FAQ</button>
+  </nav>
+
+  <button id="reset-btn">Reset Position</button>
+  <div class="container">
+    <h1>Soil Moisture Sensor Data</h1>
+    <div id="sensorValue" class="sensor-value">
+      Loading...
+    </div>
+    <div id="sensorStatus" class="sensor-status">
+      <!-- Water status will be displayed here -->
+    </div>
+    <canvas id="moistureChart" width="400" height="200"></canvas>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns"></script>
+  <script type="module">
+    // Import the functions you need from the SDKs you need
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js";
+    import { getDatabase, ref, query, limitToLast, onChildAdded } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-database.js";
+  
+    // Your web app's Firebase configuration
+    const firebaseConfig = {
+      apiKey: "AIzaSyCxDKummwyDqG-h7KEvn-_n_HhR53_QFdM",
+      authDomain: "ayaan-ki-dua.firebaseapp.com",
+      databaseURL: "https://ayaan-ki-dua-default-rtdb.firebaseio.com",
+      projectId: "ayaan-ki-dua",
+      storageBucket: "ayaan-ki-dua.appspot.com",
+      messagingSenderId: "778293311636",
+      appId: "1:778293311636:web:67fda08d5c2065e92f9c81",
+      measurementId: "G-V05738QMH3"
+    };
+  
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const database = getDatabase(app);
+  
+    // Reference to the Firebase database path
+    const dbRef = ref(database, 'soilMoistureSensor');
+  
+    // Function to update sensor value on the webpage
+    function updateSensorValue(value) {
+      const sensorValueElement = document.getElementById('sensorValue');
+      sensorValueElement.textContent = `Current Value: ${value}`;
+    }
+  
+    // Function to update the sensor status on the webpage
+    function updateSensorStatus(status) {
+      const sensorStatusElement = document.getElementById('sensorStatus');
+      sensorStatusElement.textContent = `Status: ${status}`;
+    }
+  
+    // Initialize the chart
+    const ctx = document.getElementById('moistureChart').getContext('2d');
+    const moistureChart = new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: [], // Time labels will be added dynamically
+        datasets: [{
+          label: 'Soil Moisture',
+          data: [], // Sensor values will be added dynamically
+          borderColor: '#00BCD4',
+          backgroundColor: 'rgba(0, 188, 212, 0.2)',
+          fill: true,
+        }]
+      },
+      options: {
+        scales: {
+          x: {
+            type: 'time',
+            time: {
+              unit: 'minute'
+            },
+            title: {
+              display: true,
+              text: 'Time'
+            },
+            offset: true, // Move x-axis labels to the center of the chart area
+            reverse: false // Move x-axis in positive direction
+          },
+          y: {
+            title: {
+              display: true,
+              text: 'Moisture Level'
+            },
+            suggestedMin: 200, // Set minimum y-axis value
+            suggestedMax: 1023, // Set maximum y-axis value
+            ticks: {
+              stepSize: 100 // Adjust step size of y-axis ticks as needed
+            }
+          }
+        }
+      }
+    });
+  
+    // Function to update the chart
+    function updateChart(time, value) {
+      moistureChart.data.labels.push(time);
+      moistureChart.data.datasets[0].data.push(value);
+      moistureChart.update();
+    }
+  
+    // Listen for the most recent value in the database
+    const recentValueQuery = query(dbRef, limitToLast(1));
+    onChildAdded(recentValueQuery, (snapshot) => {
+      console.log("Data snapshot received:", snapshot.val());
+      const data = snapshot.val();
+      const sensorValue = data.value !== undefined ? data.value : 'N/A';
+      const sensorStatus = data.status !== undefined ? data.status : 'N/A';
+      const timestamp = data.timestamp ? new Date(data.timestamp) : new Date(); // Assuming data contains a timestamp
+  
+      updateSensorValue(sensorValue);
+      updateSensorStatus(sensorStatus);
+      updateChart(timestamp, sensorValue);
+    });
+  </script>
+  
+  
+</body>
+</html>

@@ -1,0 +1,132 @@
+/* General reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Body styling with cool tone gradient background */
+body {
+    font-family: 'Roboto', sans-serif;
+    background: linear-gradient(135deg, #89CFF0, #4682B4, #1E90FF); /* Cool tone gradient */
+    color: #E0F7FA; /* Light cyan for better readability */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    overflow: hidden; /* Prevents scrollbars from appearing when dragging */
+    position: relative; /* For positioning the reset button */
+}
+
+/* Navbar styling */
+.navbar {
+    position: absolute;
+    top: 20px;
+    background-color: #2C3E50; /* Darker blue-gray */
+    padding: 10px 20px;
+    border-radius: 5px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+.nav-button {
+    background-color: #00BCD4; /* Cyan */
+    color: #2C3E50; /* Darker blue-gray */
+    border: none;
+    border-radius: 5px;
+    padding: 10px 15px;
+    margin: 0 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.nav-button:hover {
+    background-color: #008C9E; /* Darker cyan */
+}
+
+/* Reset button styling */
+#reset-btn {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    background-color: #00BCD4; /* Cyan */
+    color: #2C3E50; /* Darker blue-gray */
+    border: none;
+    border-radius: 5px;
+    padding: 10px 15px;
+    cursor: pointer;
+    opacity: 0.7; /* Low opacity */
+    transition: opacity 0.3s ease;
+}
+
+#reset-btn:hover {
+    opacity: 1; /* Fully opaque on hover */
+}
+
+/* Container styling */
+.container {
+    background-color: #2C3E50; /* Darker blue-gray */
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    text-align: center;
+    width: 350px;
+    border: 1px solid #34495E; /* Slightly lighter border */
+    position: absolute; /* Allows absolute positioning for dragging */
+    cursor: move; /* Changes cursor to indicate draggable element */
+}
+
+/* Middle box styling */
+.middle-box {
+    background-color: #34495E; /* Blue-gray */
+    padding: 20px;
+    border-radius: 10px;
+    margin-top: 20px; /* Adjusted margin for spacing */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+/* Header styling */
+h1 {
+    font-size: 24px;
+    color: #00BCD4; /* Cyan */
+    margin-bottom: 20px;
+}
+
+/* Input and button styling */
+label {
+    display: block;
+    font-size: 18px;
+    color: #E0F7FA; /* Light cyan */
+    margin-bottom: 10px;
+}
+
+input[type="number"] {
+    width: calc(100% - 20px);
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin-bottom: 10px;
+    outline: none;
+    background-color: #fff; /* White */
+    color: #333; /* Dark gray */
+    transition: border-color 0.3s ease;
+}
+
+input[type="number"]:focus {
+    border-color: #00BCD4; /* Cyan border color on focus */
+}
+
+button {
+    background-color: #00BCD4; /* Cyan */
+    color: #fff; /* White */
+    border: none;
+    border-radius: 5px;
+    padding: 12px 20px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #008C9E; /* Darker cyan on hover */
+}
